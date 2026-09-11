@@ -15,6 +15,8 @@ public class lerp : MonoBehaviour
     [Range(0f, 1f)]
     public float T = 0f;
 
+    //pivate float joku float tänne tj jeejee
+
     public void OnDrawGizmos()
     {
         // get position of A into vector Apos
@@ -62,6 +64,8 @@ public class lerp : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        //curr_time += Time.deltaTime;
         if (null != Platform)
         {
 
@@ -70,8 +74,12 @@ public class lerp : MonoBehaviour
             if (t > 1f) { t = 1f; } //same as Mathf.clamp01(t)
 
             // compute interpolation (x = (1-t) * A + t*B)
-            Vector3 interp_pos = (1 - t) * A.transform.position + t * B.transform.position;
+            //Vector3 interp_pos = (1-t)*A.transform.position + t*B.transform.position;
+            Vector3 interp_pos = Vector3.Lerp(A.transform.position, B.transform.position, t);
             Platform.transform.position = interp_pos;
+
+            //could use bool, -/+time
+            // make the platform move back and forth
         }
     }
 }
