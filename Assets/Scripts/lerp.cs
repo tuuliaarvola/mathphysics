@@ -75,7 +75,8 @@ public class lerp : MonoBehaviour
 
             // compute interpolation (x = (1-t) * A + t*B)
             //Vector3 interp_pos = (1-t)*A.transform.position + t*B.transform.position;
-            Vector3 interp_pos = Vector3.Lerp(A.transform.position, B.transform.position, t);
+            Vector3 interp_pos = Vector3.Lerp(A.transform.position, B.transform.position, Mathf.PingPong(curr_time, t));
+            //Vector3 interp_pos = Vector3.Lerp(A.transform.position, B.transform.position, t);
             Platform.transform.position = interp_pos;
 
             //could use bool, -/+time
