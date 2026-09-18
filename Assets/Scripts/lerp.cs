@@ -11,11 +11,16 @@ public class lerp : MonoBehaviour
 
     [Range(0f, 10f)]
     public float InterpTime = 10f;
+    [Range(0.1f, 20f)]
+    public float TimeDelay = 5f;
 
     [Range(0f, 1f)]
     public float T = 0f;
 
-    //pivate float joku float tänne tj jeejee
+    public float CurrentTime = 0f;
+    public bool GoingForwardInTime = true;
+
+    
 
     public void OnDrawGizmos()
     {
@@ -65,19 +70,47 @@ public class lerp : MonoBehaviour
     void Update()
     {
 
-        //curr_time += Time.deltaTime;
+        if (Time.time < TimeDelay)
+            return;
+
+        if (GoingForwardInTime)
+            CurrentTime += Time.deltaTime;
+        else
+            CurrentTime -= Time.deltaTime;
+
         if (null != Platform)
         {
+            T = CurrentTime / InterpTime;
+            if (T > 1f)
+            {
+                //curr_time = 0f; 
+                GoingForwardInTime = false;
+            }  // Mathf.clamp01(t) basically...
+            else if (T < 0f)
+            {
+                GoingForwardInTime = true;
+            }
 
-            float curr_time = Time.time;
-            float t = curr_time / InterpTime;
-            if (t > 1f) { t = 1f; } //same as Mathf.clamp01(t)
+            // Compute interpolation ( X = (1-t)*A + t*B )
+            //Vector3 interp_pos = (1-t)*A.transform.position + t*B.transform.position;
+            // Tasainen kulku
+            //Vector3 interp_pos = Vector3.Lerp(A.transform.position, B.transform.position, T);
+            Vector3 interp_pos = Vector3.Lerp(A.transform.position, B.transform.position, T);
+            Platform.transform.position = interp_pos;
+
+            //curr_time += Time.deltaTime;
+           // if (null != Platform)
+        //{
+
+          //  float curr_time = Time.time;
+          // float t = curr_time / InterpTime;
+          //  if (t > 1f) { t = 1f; } //same as Mathf.clamp01(t)
 
             // compute interpolation (x = (1-t) * A + t*B)
             //Vector3 interp_pos = (1-t)*A.transform.position + t*B.transform.position;
-            Vector3 interp_pos = Vector3.Lerp(A.transform.position, B.transform.position, Mathf.PingPong(curr_time, t));
+          //  Vector3 interp_pos = Vector3.Lerp(A.transform.position, B.transform.position, Mathf.PingPong(curr_time, t));
             //Vector3 interp_pos = Vector3.Lerp(A.transform.position, B.transform.position, t);
-            Platform.transform.position = interp_pos;
+           // Platform.transform.position = interp_pos;
 
             //could use bool, -/+time
             // make the platform move back and forth
