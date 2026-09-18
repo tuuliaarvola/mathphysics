@@ -6,8 +6,8 @@ public class EasingTest : MonoBehaviour
 
     public GameObject[] MyGameObjects;
 
-    public EasingFunction.Ease ease; // public "easetype" which the user can select
-    private EasingFunction.Function easeFunction; // delegate function variable
+    public EasingFunction.Ease[] ease; // public "easetype" which the user can select the easing type
+    private EasingFunction.Function[] easeFunction; // delegate function variable
 
     public Color[] MyColorsStart;
     public Color[] MyColorsEnd;
@@ -52,9 +52,12 @@ public class EasingTest : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
-        //Get the correct easing function
-        easeFunction = EasingFunction.GetEasingFunction(ease);
+        //Create the array for the easing function delegates
+        easeFunction = new EasingFunction.Function[ease.Length];
+        
+            //Get the correct easing function
+        for (int i = 0; i < ease.Length; i++)
+            easeFunction[i] = EasingFunction.GetEasingFunction(ease[i]);
 
         OriginalPositions = new Vector3[MyGameObjects.Length];
         for (int i = 0; i < MyGameObjects.Length; i++)
@@ -80,9 +83,9 @@ public class EasingTest : MonoBehaviour
             {
                 // Position
                 MyGameObjects[i].transform.position =
-                    OriginalPositions[i] + MoveAmount * easeFunction(0f, 1f, t) * Vector3.right;
+                    OriginalPositions[i] + MoveAmount * easeFunction[i](0f, 1f, t) * Vector3.right;
                 // Material color
-                MyGameObjects[i].GetComponent<MeshRenderer>().material.color = Color.Lerp(MyColorsStart[i], MyColorsEnd[i], easeFunction(0f, 1f, t));
+                MyGameObjects[i].GetComponent<MeshRenderer>().material.color = Color.Lerp(MyColorsStart[i], MyColorsEnd[i], easeFunction[i](0f, 1f, t));
 
             }
 
