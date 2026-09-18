@@ -45,9 +45,16 @@
  * Below is an example of how to use the easing functions in the file. There is a getting function that will return the function
  * from an enum. This is useful since the enum can be exposed in the editor and then the function queried during Start().
  * 
+ * Let the user select the easing type:
  * EasingFunction.Ease ease = EasingFunction.Ease.EaseInOutQuad;
- * EasingFunction.Function func = GetEasingFunction(ease;
+ *  ^Public member variable
+ *  
+ *  THIS IS THE DELEGATE FUNCTION:
+ * EasingFunction.Function func = GetEasingFunction(ease);
+ * ^Private member variable
+ *
  * 
+ * Call the selected easing functions via the delegate:
  * float value = func(0, 10, 0.67f);
  * 
  * EasingFunction.Function derivativeFunc = GetEasingFunctionDerivative(ease);
