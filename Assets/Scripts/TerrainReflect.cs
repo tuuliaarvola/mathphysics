@@ -10,7 +10,7 @@ public class TerrainReflect : MonoBehaviour
 
     public void OnDrawGizmos()
     {
-        Vector2 origin = transform.position; // position of the gameobject script is attached to
+        Vector3 origin = transform.position; // position of the gameobject script is attached to
         Vector3 laser = transform.right; // laser direction
 
         //Raycast
