@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CrossProduct : MonoBehaviour
 {
-
+    public GameObject target;
     public void OnDrawGizmos()
     {
         Vector3 origin = transform.position; // position of the gameobject script is attached to
@@ -27,7 +27,16 @@ public class CrossProduct : MonoBehaviour
 
             //Cross product (ristitulo)
             Vector3 cross = Vector3.Cross(hit.normal, ray);
+            cross.Normalize();
             Drawing.DrawVector(5* cross, hit.point, Color.violetRed, 1f);
+
+            Vector3 cross2 = Vector3.Cross(cross, hit.normal);
+            cross2.Normalize();
+            Drawing.DrawVector(5 * cross2, hit.point, Color.darkBlue, 1f);
+
+            target.transform.position = hit.point;
+            target.transform.rotation = Quaternion.LookRotation(cross2, hit.normal);
+            
 
         }
      
