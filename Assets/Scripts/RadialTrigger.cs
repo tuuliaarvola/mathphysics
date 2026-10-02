@@ -3,72 +3,64 @@ using UnityEngine;
 
 public class RadialTrigger : MonoBehaviour
 {
-    [Range(1f, 10f)]
-    public float Radius = 1f;
 
-    [Range(1f, 180f)]
-    public float FieldOfView = 1f;
+    [Range(0.1f, 20f)]
+    public float Radius = 5f;
 
-    [Range(1f, 10f)]
-    public float Height = 1f;
-
-    public GameObject IntersectTarget;
-    public GameObject LookAtTarget;
-    // The code below makes the variable private but shows it in the inspector
-    // Transform holds reference to gameobject transform and makes writing code shorter
-    // So overall a better way to write the code
-    // [SerializeField] private Transform _intersectTarget;
+    public GameObject Target;
 
     public bool Triggered = false;
 
     private bool IsTriggered()
     {
-        if (IntersectTarget == null) return false;
-        if (LookAtTarget== null) return false;
+        // Local vector variables
+        Vector3 trigger = transform.position;
+        trigger.y = 0f;  // FIX from last week
+        Vector3 target = Target.transform.position;
+        target.y = 0f;   // FIX from last week
+        Vector3 trigger_to_target = target - trigger;  // vector math!!!
 
-        // Vertical distance trigger
-       Vector3 difference = IntersectTarget.transform.position - transform.position;
+        return trigger_to_target.magnitude <= Radius;
+    }
 
-       if (Mathf.Abs(difference.y) > Height / 2f) return false;
+    private void OnDrawGizmos()
+    {
+        // Are we triggered???
+        Triggered = IsTriggered();
+        if (Triggered)
+            Handles.color = Color.red;
+        else 
+            Handles.color = Color.green;
 
-       // Horizontal distance trigger
-       Vector3 horizontalTargetDirection = new Vector3(difference.x, 0f, difference.z);
+        Handles.DrawWireDisc(transform.position, Vector3.up, Radius);
 
-        if (horizontalTargetDirection.magnitude > Radius) return false;
+        // Local vector variables
+        Vector3 trigger = transform.position;
+        Vector3 target = Target.transform.position;
+        Vector3 trigger_to_target = target - trigger;  // vector math!!!
 
-        //Look at trigger
-        Vector3 lookDirection = LookAtTarget.transform.position - transform.position;
+        // Draw vectors from origin to trigger & target
+        Drawing.DrawVector(trigger, Vector3.zero, Color.paleGreen, 2f);
+        Drawing.DrawVector(target, Vector3.zero, Color.paleGreen, 2f);
 
-        lookDirection.y = 0f;
+        // Draw vector from trigger to target
+        Drawing.DrawVector(trigger_to_target, trigger, Color.darkMagenta, 2f);
 
-        lookDirection.Normalize();
-        horizontalTargetDirection.Normalize();
-
-        float dot = Vector3.Dot(lookDirection, horizontalTargetDirection);
-
-        float treshhold = Mathf.Cos((FieldOfView / 2f) * Mathf.Deg2Rad);
-        return dot >= treshhold;
-
-
-
-
-
+        // Draw the "projected" vector
+        trigger_to_target.y = 0f;
+        Drawing.DrawVector(trigger_to_target, trigger, Color.blue, 2f);
 
     }
 
-
-
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-   void Start()
+    void Start()
     {
-
+        
     }
 
     // Update is called once per frame
     void Update()
-   {
-
+    {
+        
     }
 }
-

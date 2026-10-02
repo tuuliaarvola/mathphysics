@@ -1,0 +1,108 @@
+using System;
+using UnityEditor;
+using UnityEngine;
+
+public class LookAtTrigger : MonoBehaviour
+{
+
+    [Range(0.1f, 20f)]
+    public float Radius = 5f;
+
+    //[Range(-1f, 1f)]
+    //public float Threshold = 0.86f;
+    [Range(0f, 360f)]
+    public float FOVDegrees = 90f;
+    [SerializeField]
+    private float Threshold = Mathf.Cos(Mathf.Deg2Rad*45f);
+
+    public GameObject Target;
+    public GameObject LookingAt;
+
+    public bool Triggered = false;
+
+    private bool IsTriggered()
+    {
+        Threshold = Mathf.Cos(Mathf.Deg2Rad * FOVDegrees / 2f);
+
+        // Local vector variables
+        Vector3 trigger = transform.position;
+        Vector3 target = Target.transform.position;
+        Vector3 looking = LookingAt.transform.position;
+
+        Vector3 trigger_to_target = target - trigger;  // vector math!!!
+        Vector3 trigger_to_lookat = looking - trigger;
+
+        //return trigger_to_target.magnitude <= Radius;
+        return Vector3.Dot(trigger_to_lookat.normalized,
+                           trigger_to_target.normalized) > Threshold;
+    }
+
+    private void OnDrawGizmos()
+    {
+        // Are we triggered???
+        Triggered = IsTriggered();
+        if (Triggered)
+            Handles.color = Color.red;
+        else
+            Handles.color = Color.green;
+
+        //Handles.DrawWireDisc(transform.position, Vector3.up, Radius);
+
+        // Local vector variables
+        Vector3 trigger = transform.position;
+        Vector3 target = Target.transform.position;
+        Vector3 looking = LookingAt.transform.position;
+
+        Vector3 trigger_to_target = target - trigger;  // vector math!!!
+        Vector3 trigger_to_lookat = looking - trigger; 
+
+        // Draw vectors from origin to trigger & target
+        //Drawing.DrawVector(trigger, Vector3.zero, Color.paleGreen, 2f);
+        //Drawing.DrawVector(target, Vector3.zero, Color.paleGreen, 2f);
+
+        // Draw vector from trigger to target
+        Drawing.DrawVector(trigger_to_target, trigger, Color.darkMagenta, 2f);
+        // Draw vector from trigger to looking at
+        Drawing.DrawVector(trigger_to_lookat, trigger, Color.darkMagenta, 2f);
+
+        // Draw NORMALIZED vector from trigger to target
+        //Drawing.DrawVector(trigger_to_target.normalized, trigger, Color.white, 2f);
+        // Draw NORMALIZED vector from trigger to looking at
+        //Drawing.DrawVector(trigger_to_lookat.normalized, trigger, Color.white, 2f);
+
+        //Drawing.DrawVector(Radius*trigger_to_lookat.normalized, trigger, Color.white, 2f);
+        // Create a quaternion that rotates around the y-axis
+        Quaternion rot = Quaternion.AngleAxis(FOVDegrees / 2f, Vector3.up);
+        // Take the original vector and rotate it
+        Vector3 direction = Radius * trigger_to_lookat.normalized;
+        Vector3 direction_rot = rot * direction;
+
+        // Draw the rotated vector
+        Color col = Color.green;
+        if (Triggered)
+            col = Color.red;
+
+        Drawing.DrawVector(direction_rot, trigger, col, 2f);
+        rot = Quaternion.AngleAxis(-FOVDegrees / 2f, Vector3.up);
+        direction_rot = rot * direction;
+        Drawing.DrawVector(direction_rot, trigger, col, 2f);
+
+        Handles.DrawWireArc(trigger, Vector3.up, direction_rot, 
+                            FOVDegrees, Radius);
+
+        //float dotp = Vector3.Dot(trigger_to_target.normalized, trigger_to_lookat.normalized);
+        //Debug.Log("Dot product: " + dotp);
+    }
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+}
