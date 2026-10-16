@@ -14,6 +14,14 @@ public class SimplePlane : MonoBehaviour
 
     public Mesh mymesh;
 
+    public float NoiseAmplitude = 10f;
+    [Range(0.01f, 2.0f)]
+    public float NoiseFrequency = 1.0f;
+    [Range(0f, 20f)]
+    public float NoiseOffSetX = 0.0f;
+    [Range(0f, 20f)]
+    public float NoiseOffSetY = 0.0f;
+
     private Mesh GenerateMesh()
     {
         Mesh mesh = new Mesh();
@@ -32,6 +40,8 @@ public class SimplePlane : MonoBehaviour
             for (int j=0; j <= Segments; j++)
             {
                 point.x = j *delta;
+                point.y = Mathf.PerlinNoise(NoiseFrequency * point.x + NoiseOffSetX,
+                                            NoiseFrequency * point.z + NoiseOffSetY) * NoiseAmplitude;
                 point.z = i * delta;
                 verts.Add(point);
                 uvs.Add(new Vector2 (j / (float)Segments, i / (float)Segments));
