@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class FlatDonut : MonoBehaviour
@@ -29,11 +30,25 @@ public class FlatDonut : MonoBehaviour
         // List of vertices
         List<Vector3> vertices = new List<Vector3>();
 
+        List<Vector2> uvs = new List<Vector2>();
+
+        // compute our vertices on the edge of the disc
+
         // Calculate the angle covered by each segment
         float delta_angle = 360.0f / Segments;
+        Vector3 point = Vector3.zero;
         // Go trough segments and create cordinates
         for (int i = 0; i < Segments; i++)
         {
+
+            //point.x = Mathf.Cos(Mathf.Deg2Rad * (delta_angle * i));
+            //point.y = Mathf.Sin(Mathf.Deg2Rad * (delta_angle * i));
+
+            //vertices.Add(point * InnerRadius);
+            Vector2 uvcoord = new Vector2(point.x, point.y);
+
+            // compute inner UIV
+            uvs.Add(0.5f * uvcoord * (InnerRadius / OuterRadius) + new Vector2(0.5f, 0.5f));
             // calculate segment's angle
             float angle = delta_angle * i;
             // calculate x position of inner vertex. cos for horizontal position
@@ -47,6 +62,10 @@ public class FlatDonut : MonoBehaviour
 
             vertices.Add(new Vector3(x_inner, 0, z_inner));
             vertices.Add(new Vector3(x_outer, 0, z_outer));
+
+            //ouert point
+            //vertices.Add(point * OuterRadius);
+            uvs.Add(0.5f * uvcoord + new Vector2(0.5f, 0.5f));
         }
 
         // gives vertex positions to the mesh
