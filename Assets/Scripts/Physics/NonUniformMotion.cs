@@ -1,12 +1,17 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class NonUniformMotion : MonoBehaviour
 {
  public GameObject MovingObject;
-
+[Header("Motion Variables")]
 public Vector3 Pos0; // x0
 public Vector3 Vel0; // v0
-    public Vector3 Acc; //a
+public Vector3 Acc; //a
+
+ [Header("Internal variables")]
+ [SerializeField]
+ private Vector3 vel;
                     //public float Time = 0f;
 
 // From physics: x = x0 + v*t
@@ -48,15 +53,48 @@ private void OnDrawGizmos()
 void Start()
 {
 
+        // set initial position for the gameobject
+    MovingObject.transform.position = Pos0;
+
+        // set initial velocity (internal variable)
+    vel = Vel0;
+
 }
 
 // Update is called once per frame
 void Update()
 {
-    // x = x0 + v*t
-    Vector3 pos = Pos0 + Time.time * Vel0;
 
-    MovingObject.transform.position = pos;
+        // Get the current pos
+    Vector3 pos = MovingObject.transform.position;
+        // update pos
+    pos = pos + vel * Time.deltaTime;
+        // update vel
+    vel = vel + Acc* Time.deltaTime;
+
+    // Try to get WASD and modify velocity
+    if (Keyboard.current.wKey.wasPressedThisFrame)
+        {
+            vel += Vector3.up * 5f;
+        }
+
+        if (Keyboard.current.aKey.wasPressedThisFrame)
+        {
+            vel += Vector3.left * 5f;
+        }
+
+        if (Keyboard.current.dKey.wasPressedThisFrame)
+        {
+            vel += Vector3.right * 5f;
+        }
+
+        if (Keyboard.current.sKey.wasPressedThisFrame)
+        {
+            vel += Vector3.down * 5f;
+        }
+
+        // set the position of the gameobject
+        MovingObject.transform.position = pos;
 
 }
 }
