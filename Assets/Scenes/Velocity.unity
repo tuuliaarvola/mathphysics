@@ -150,8 +150,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NonUniformMotion
   MovingObject: {fileID: 947220838}
   Pos0: {x: 0, y: 1.7, z: 0}
-  Vel0: {x: 4.2, y: 11.42, z: 0}
-  Acc: {x: 0, y: -9.4, z: 0}
+  Vel0: {x: 250, y: 45, z: 0}
+  Acc: {x: 0, y: -9.81, z: 0}
+  angle: 10
   vel: {x: 0, y: 0, z: 0}
 --- !u!4 &435226448
 Transform:
@@ -256,7 +257,7 @@ Transform:
   m_GameObject: {fileID: 686528891}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12.93, y: 5.04, z: -10}
+  m_LocalPosition: {x: 12.93, y: 5.04, z: -23.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -540,7 +541,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 20.96488, y: 3.08975, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 435226448}
