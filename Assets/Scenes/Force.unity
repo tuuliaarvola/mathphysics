@@ -651,7 +651,8 @@ GameObject:
   - component: {fileID: 1653676490}
   - component: {fileID: 1653676489}
   - component: {fileID: 1653676488}
-  - component: {fileID: 1653676492}
+  - component: {fileID: 1653676493}
+  - component: {fileID: 1653676494}
   m_Layer: 0
   m_Name: PhysicsObject
   m_TagString: Untagged
@@ -671,7 +672,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e0eaeef4c8f424088b4e22d8919ca7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PhysicsObject
-  Mass: 1
+  Mass: 80
   GravityValue: 9.81
   Gravity: 1
   Forces: []
@@ -680,7 +681,6 @@ MonoBehaviour:
   Position: {x: 0, y: 0, z: 0}
   Velocity: {x: 0, y: 0, z: 0}
   Acceleration: {x: 0, y: 0, z: 0}
-  ImpulseTimer: 0
   references:
     version: 2
     RefIds: []
@@ -696,7 +696,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65b039823d5373243897384f6b987afd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DragForce
-  DragCoeffiencent: 0.043
+  DragCoeffiencent: 0.2
 --- !u!114 &1653676490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -709,7 +709,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18489975548a9644db57edef3023bec8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ImpulseForce
-  Impulse: {x: 10, y: 30, z: 0}
+  Impulse: {x: 0, y: 0, z: 0}
   Duration: 1
 --- !u!4 &1653676491
 Transform:
@@ -727,7 +727,22 @@ Transform:
   - {fileID: 1506632125}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1653676492
+--- !u!114 &1653676493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653676487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c5c7616b7e9f71419d157f7a526eee9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BungeeCordForce
+  AnchorPoint: {fileID: 1536363209}
+  NormalLength: 20
+  SpringConstant: 80
+--- !u!114 &1653676494
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -741,7 +756,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpringForce
   AnchorPoint: {fileID: 1536363209}
   NormalLength: 1
-  SpringConstant: 2
+  SpringConstant: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

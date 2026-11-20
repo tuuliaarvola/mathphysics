@@ -37,8 +37,8 @@ public class PhysicsObject : MonoBehaviour
     private Vector3 Velocity = Vector3.zero;
     [SerializeField]
     private Vector3 Acceleration = Vector3.zero;
-    [SerializeField]
-    private float ImpulseTimer = 0f;
+    //[SerializeField]
+    //private float ImpulseTimer = 0f;
 
     // just for visualization in OnDrawGizmos
     private SpringForce _spring;
